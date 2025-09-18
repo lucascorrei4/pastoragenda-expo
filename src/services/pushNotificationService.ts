@@ -50,6 +50,12 @@ class PushNotificationService {
         return;
       }
 
+      // Skip push notifications in development build if Firebase is not configured
+      if (__DEV__) {
+        console.log('Skipping push notifications in development mode');
+        return;
+      }
+
       // Get device ID
       this.deviceId = Device.osInternalBuildId || Device.modelId || 'unknown';
       console.log('Device ID:', this.deviceId);

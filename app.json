@@ -1,17 +1,12 @@
 {
   "expo": {
     "name": "Pastor Agenda",
-    "slug": "pastor-agenda",
-    "version": "1.0.0",
+    "slug": "pastoragenda",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "pastoragenda",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/images/icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#000000"
-    },
+    "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "ios": {
       "bundleIdentifier": "com.pastoragenda",
@@ -42,7 +37,7 @@
       ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#1a1a2e"
+        "backgroundColor": "#070a10"
       }
     },
     "web": {
@@ -52,16 +47,6 @@
     },
     "plugins": [
       "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#000000",
-          "hideExponentText": true
-        }
-      ],
       [
         "expo-location",
         {
@@ -125,6 +110,6 @@
         "projectId": "b7ca9d2c-a3cb-446d-8e6e-6a81b8c4f742"
       }
     },
-    "owner": "lucas-"
+    "owner": "lucas-apps"
   }
 }

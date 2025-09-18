@@ -27,16 +27,16 @@
         "resourceClass": "m-medium"
       },
       "android": {
-        "buildType": "aab"
+        "buildType": "app-bundle"
       }
     }
   },
   "submit": {
     "production": {
       "ios": {
-        "appleId": "your-apple-id@example.com",
-        "ascAppId": "your-app-store-connect-app-id",
-        "appleTeamId": "your-apple-team-id"
+        "appleId": "lucascorreiaevangelista@gmail.com",
+        "ascAppId": "6752588285",
+        "appleTeamId": "32JGH928MA"
       },
       "android": {
         "serviceAccountKeyPath": "./path-to-your-service-account-key.json",
