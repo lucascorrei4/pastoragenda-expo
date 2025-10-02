@@ -2,17 +2,22 @@
   "expo": {
     "name": "Pastor Agenda",
     "slug": "pastoragenda",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "pastoragenda",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
     "ios": {
       "bundleIdentifier": "com.pastoragenda",
       "supportsTablet": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access your camera to take photos and videos.",
+        "NSCameraUsageDescription": "Pastor Agenda needs camera access to allow users to take profile photos and capture images for agenda profile photo.",
         "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos to attach images and videos.",
         "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone to record audio.",
         "NSLocationWhenInUseUsageDescription": "Allow $(PRODUCT_NAME) to use your location for enhanced features.",
@@ -21,7 +26,7 @@
     },
     "android": {
       "package": "com.pastoragenda",
-      "versionCode": 1,
+      "versionCode": 103,
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO",

@@ -14,6 +14,7 @@ interface WebViewContainerProps {
   onError?: (error: any) => void;
   onLoadStart?: () => void;
   onLoadEnd?: () => void;
+  onWebViewReady?: () => void;
   initialUrl?: string;
 }
 
@@ -23,6 +24,7 @@ export const WebViewContainer: React.FC<WebViewContainerProps> = ({
   onError,
   onLoadStart,
   onLoadEnd,
+  onWebViewReady,
   initialUrl = env.APP_URL,
 }) => {
   const webViewRef = useRef<WebView>(null);
@@ -30,6 +32,8 @@ export const WebViewContainer: React.FC<WebViewContainerProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
+  const [isWebViewMounted, setIsWebViewMounted] = useState(false);
+  const [isWebViewReady, setIsWebViewReady] = useState(false);
   const [bridge, setBridge] = useState<WebViewBridge | null>(null);
   const { pushToken, isRegistered } = useTokenNotification();
   const insets = useSafeAreaInsets();
@@ -69,6 +73,25 @@ export const WebViewContainer: React.FC<WebViewContainerProps> = ({
     }
   }, [bridge]);
 
+  // WebView mounting detection
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsWebViewMounted(true);
+      console.log('WebView mounted');
+    }, 100); // Small delay to ensure WebView is mounted
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Notify when WebView is ready
+  React.useEffect(() => {
+    if (isWebViewMounted && !isLoading && !hasError && onWebViewReady) {
+      setIsWebViewReady(true);
+      onWebViewReady();
+      console.log('WebView ready - notifying parent');
+    }
+  }, [isWebViewMounted, isLoading, hasError, onWebViewReady]);
+
   // Add timeout to prevent infinite loading
   React.useEffect(() => {
     const timeout = setTimeout(() => {
@@ -77,7 +100,7 @@ export const WebViewContainer: React.FC<WebViewContainerProps> = ({
         setIsLoading(false);
         setHasError(true);
       }
-    }, 10000); // 10 second timeout
+    }, 15000); // Increased to 15 second timeout
 
     return () => clearTimeout(timeout);
   }, [isLoading]);
@@ -173,6 +196,15 @@ export const WebViewContainer: React.FC<WebViewContainerProps> = ({
     console.log('WebView load completed for URL:', initialUrl);
     setIsLoading(false);
     onLoadEnd?.();
+    
+    // Additional check to ensure WebView is truly ready
+    setTimeout(() => {
+      if (isWebViewMounted && !hasError && onWebViewReady && !isWebViewReady) {
+        setIsWebViewReady(true);
+        onWebViewReady();
+        console.log('WebView load end - notifying ready');
+      }
+    }, 500); // Small delay to ensure content is rendered
   };
 
   // Enhanced JavaScript bridge for comprehensive communication
@@ -503,13 +535,19 @@ export const WebViewContainer: React.FC<WebViewContainerProps> = ({
     );
   }
 
-  return (
-    <View style={[webViewStyles.container, { paddingTop: insets.top }]}>
-      {isLoading && (
+  // Show loading state until WebView is ready
+  if (!isWebViewMounted || isLoading) {
+    return (
+      <View style={[webViewStyles.container, { paddingTop: insets.top }]}>
         <View style={[webViewStyles.loadingContainer, { paddingTop: insets.top }]}>
           <ActivityIndicator size="large" color={env.PRIMARY_COLOR} />
         </View>
-      )}
+      </View>
+    );
+  }
+
+  return (
+    <View style={[webViewStyles.container, { paddingTop: insets.top }]}>
       <WebView
         ref={webViewRef}
         source={{ uri: initialUrl }}

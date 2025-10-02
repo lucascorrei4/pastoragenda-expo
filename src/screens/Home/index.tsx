@@ -1,8 +1,10 @@
 import React from 'react';
 import { WebViewContainer } from '../../components/WebViewContainer';
+import { useWebViewReady } from '../../context/WebViewReadyContext';
 import { env } from '../../env';
 
 export default function HomeScreen() {
+  const { onWebViewReady } = useWebViewReady();
   const handleNavigationStateChange = (navState: any) => {
     console.log('Navigation state changed:', navState);
   };
@@ -48,6 +50,14 @@ export default function HomeScreen() {
     console.log('WebView load completed');
   };
 
+  const handleWebViewReady = () => {
+    console.log('WebView is ready - can hide splash screen');
+    // Call the parent callback if available
+    if (onWebViewReady) {
+      onWebViewReady();
+    }
+  };
+
   return (
     <WebViewContainer
       onNavigationStateChange={handleNavigationStateChange}
@@ -55,6 +65,7 @@ export default function HomeScreen() {
       onError={handleWebViewError}
       onLoadStart={handleLoadStart}
       onLoadEnd={handleLoadEnd}
+      onWebViewReady={handleWebViewReady}
       initialUrl={env.APP_URL}
     />
   );
